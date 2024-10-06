@@ -3,6 +3,7 @@ import "./App.css";
 import Call from "./assets/Call";
 import Mute from "./assets/Mute";
 import Pause from "./assets/Pause";
+import HangUp from "./assets/Hangup";
 
 const App = () => {
   const [showCallModal, setCallModal] = useState(false);
@@ -10,6 +11,14 @@ const App = () => {
   const [pauseCall, setPauseCall] = useState(false);
   const [callStatus, setCallStatus] = useState("Calling...");
   const [seconds, setSeconds] = useState(0);
+  const [animateCallIcon, setAnimateCallIcon] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimateCallIcon(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCallModal = () => {
     if (showCallModal) {
@@ -63,12 +72,12 @@ const App = () => {
       <div className="call-icon">
         <div onClick={handleCallModal}>
           {!showCallModal ? (
-            <div className="make-call">
+            <div className={`make-call ${animateCallIcon ? "bounce" : ""}`}>
               <Call width={25} height={25} />
             </div>
           ) : (
             <div onClick={handleEndCall} className="end-call">
-              <Call width={25} height={25} />
+              <HangUp width={25} height={25} />
             </div>
           )}
         </div>
