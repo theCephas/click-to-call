@@ -1,15 +1,117 @@
-import ClickToCallButton from "./components/ClickToCallButton";
-import CallInterface from "./components/CallInterface";
-import CallHistory from "./components/CallHistory";
+import { useState, useEffect } from "react";
 import "./App.css";
+import Call from "./assets/Call";
+import Mute from "./assets/Mute";
+import Pause from "./assets/Pause";
 
 const App = () => {
+  const [showCallModal, setCallModal] = useState(false);
+  const [muteCall, setMuteCall] = useState(false);
+  const [pauseCall, setPauseCall] = useState(false);
+  const [callStatus, setCallStatus] = useState("Calling...");
+  const [seconds, setSeconds] = useState(0);
+
+  const handleCallModal = () => {
+    if (showCallModal) {
+      setSeconds(0);
+      setCallStatus("Calling...");
+    }
+    setCallModal(!showCallModal);
+  };
+
+  const handleMuteCall = () => setMuteCall(!muteCall);
+
+  const handlePauseCall = () => setPauseCall(!pauseCall);
+
+  useEffect(() => {
+    let timer;
+    if (showCallModal) {
+      timer = setTimeout(() => setCallStatus("00:00"), 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [showCallModal]);
+
+  useEffect(() => {
+    let interval;
+    if (callStatus !== "Calling..." && showCallModal) {
+      interval = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds + 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [callStatus, showCallModal]);
+
+  const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const secs = totalSeconds % 60;
+    return hours > 0
+      ? `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+          2,
+          "0"
+        )}:${String(secs).padStart(2, "0")}`
+      : `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  };
+
+  const handleEndCall = () => {
+    setMuteCall(false);
+    setPauseCall(false);
+  };
+
   return (
     <div className="app">
-      <h1>Click-to-Call Demo</h1>
-      <ClickToCallButton phoneNumber="1234567890" />
-      <CallInterface />
-      <CallHistory />
+      <div className="call-icon">
+        <div onClick={handleCallModal}>
+          {!showCallModal ? (
+            <div className="make-call">
+              <Call width={25} height={25} />
+            </div>
+          ) : (
+            <div onClick={handleEndCall} className="end-call">
+              <Call width={25} height={25} />
+            </div>
+          )}
+        </div>
+        {showCallModal && (
+          <div className="call-modal">
+            <div className="header">
+              <img
+                src={`https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=peter`}
+                alt=""
+                width={50}
+                height={50}
+              />
+              <div className="header-deets">
+                <h4>John Doe</h4>
+                <p>
+                  {callStatus === "Calling..."
+                    ? callStatus
+                    : formatTime(seconds)}
+                </p>
+              </div>
+            </div>
+            <div className="actions">
+              <div
+                onClick={handleMuteCall}
+                className={`action ${muteCall && "muted-call"}`}
+              >
+                <Mute fill="white" width={25} height={25} className="mute" />
+              </div>
+              <div
+                onClick={handlePauseCall}
+                className={`action ${pauseCall && "pause-call"}`}
+              >
+                <Pause
+                  stroke="white"
+                  width={25}
+                  height={25}
+                  className="pause"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

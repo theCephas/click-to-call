@@ -1,68 +1,111 @@
 #root {
   max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  height: 100vh;
 }
 
 .app {
   font-family: Arial, sans-serif;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  position: relative;
 }
 
-.click-to-call-button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+.call-icon {
   cursor: pointer;
-  transition: background-color 0.3s;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+}
+.make-call {
+  animation: bounce 2s infinite;
+  background-color: #00a300;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.end-call {
+  background-color: red;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 }
 
-.click-to-call-button:hover {
-  background-color: #45a049;
+.call-modal {
+  background-color: #242424;
+  height: 160px;
+  width: 300px;
+  border-radius: 12px;
+  position: absolute;
+  bottom: 55px;
+  right: 0px;
+  padding: 10px 8px;
+}
+img {
+  border-radius: 50%;
+}
+.header {
+  display: flex;
+  gap: 15px;
+}
+.header-deets {
+  margin-top: -20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.header-deets p {
+  margin-top: -10px;
+  font-size: 14px;
 }
 
-.call-interface {
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.actions {
+  display: flex;
+  margin-top: 30px;
+  padding: 0 60px;
+  justify-content: space-between;
+  align-items: center;
 }
-
-.call-status,
-.call-duration {
-  margin-bottom: 10px;
-}
-
-.end-call-button {
-  background-color: #f44336;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+.action {
   cursor: pointer;
+  background-color: black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.muted-call {
+  background-color: white;
+  .mute {
+    fill: red;
+  }
 }
 
-.call-history {
-  margin-top: 20px;
+.pause-call {
+  background-color: white;
+  .pause {
+    stroke: red;
+  }
 }
 
-.call-history ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.call-history li {
-  margin-bottom: 10px;
-  padding: 10px;
-  background-color: #1d2128;
-  border-radius: 5px;
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
 }
