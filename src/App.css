@@ -37,7 +37,8 @@
   border-radius: 50%;
 }
 
-.call-modal {
+.call-modal,
+.conf-modal {
   background-color: #242424;
   height: 160px;
   width: 300px;
@@ -45,7 +46,40 @@
   position: absolute;
   bottom: 55px;
   right: 0px;
-  padding: 10px 8px;
+  padding: 20px;
+  padding-top: 28px;
+}
+.conf-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+.conf-modal > p {
+  width: 220px;
+  line-height: 25px;
+  font-size: 16px;
+  text-align: center;
+}
+.btns {
+  display: flex;
+  gap: 30px;
+  cursor: pointer;
+}
+button {
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
+.btn-no {
+  background-color: red;
+}
+.btn-yes {
+  background-color: green;
 }
 img {
   border-radius: 50%;

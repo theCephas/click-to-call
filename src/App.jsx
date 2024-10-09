@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Call from "./assets/Call";
 import Mute from "./assets/Mute";
@@ -12,6 +12,8 @@ const App = () => {
   const [callStatus, setCallStatus] = useState("Calling...");
   const [seconds, setSeconds] = useState(0);
   const [animateCallIcon, setAnimateCallIcon] = useState(true);
+  const [showConfirmationModal, setConfirmationModal] = useState(false);
+  const timerIntervalRef = useRef(null); // Use ref to store the interval ID
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,6 +21,10 @@ const App = () => {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  const handleConfModal = () => {
+    setConfirmationModal(!showConfirmationModal);
+  };
 
   const handleCallModal = () => {
     if (showCallModal) {
@@ -41,13 +47,12 @@ const App = () => {
   }, [showCallModal]);
 
   useEffect(() => {
-    let interval;
     if (callStatus !== "Calling..." && showCallModal) {
-      interval = setInterval(() => {
+      timerIntervalRef.current = setInterval(() => {
         setSeconds((prevSeconds) => prevSeconds + 1);
       }, 1000);
     }
-    return () => clearInterval(interval);
+    return () => clearInterval(timerIntervalRef.current); // Clear interval when call ends
   }, [callStatus, showCallModal]);
 
   const formatTime = (totalSeconds) => {
@@ -63,14 +68,18 @@ const App = () => {
   };
 
   const handleEndCall = () => {
+    clearInterval(timerIntervalRef.current); // Stop the timer completely
+    setCallModal(false);
     setMuteCall(false);
     setPauseCall(false);
+    setSeconds(0); // Optionally reset the seconds when call ends
+    setCallStatus("Calling..."); // Reset the call status
   };
 
   return (
     <div className="app">
       <div className="call-icon">
-        <div onClick={handleCallModal}>
+        <div onClick={handleConfModal}>
           {!showCallModal ? (
             <div className={`make-call ${animateCallIcon ? "bounce" : ""}`}>
               <Call width={25} height={25} />
@@ -81,6 +90,22 @@ const App = () => {
             </div>
           )}
         </div>
+        {showConfirmationModal && (
+          <div className="conf-modal">
+            <p>Are you sure you want to call this contact?</p>
+            <div className="btns">
+              <button
+                className="btn-no"
+                onClick={() => setConfirmationModal(false)}
+              >
+                No
+              </button>
+              <button className="btn-yes" onClick={handleCallModal}>
+                Yes
+              </button>
+            </div>
+          </div>
+        )}
         {showCallModal && (
           <div className="call-modal">
             <div className="header">
