@@ -120,7 +120,7 @@ const App = () => {
                 <p>
                   {callStatus === "Calling..."
                     ? callStatus
-                    : formatTime(seconds)}
+                    : `Connected: ${formatTime(seconds)}`}
                 </p>
               </div>
             </div>
