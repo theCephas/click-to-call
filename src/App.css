@@ -41,7 +41,7 @@
 .conf-modal {
   background-color: #242424;
   height: 160px;
-  width: 300px;
+  width: 270px;
   border-radius: 12px;
   position: absolute;
   bottom: 55px;
@@ -102,7 +102,7 @@ img {
 .actions {
   display: flex;
   margin-top: 30px;
-  padding: 0 60px;
+  padding: 0 40px;
   justify-content: space-between;
   align-items: center;
 }
